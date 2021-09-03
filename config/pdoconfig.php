@@ -28,13 +28,13 @@
 $DB_host = "localhost";
 
 /* Database User */
-$DB_user = "";
+$DB_user = "root";
 
 /* Database Password */
 $DB_pass = "";
 
 /* Database Name */
-$DB_name = "";
+$DB_name = "traffic";
 
 /* Init Connection */
 try {

@@ -34,11 +34,11 @@ class DataSource
 
     const HOST = 'localhost'; //Host
 
-    const USERNAME = ''; //Username
+    const USERNAME = 'root'; //Username
 
     const PASSWORD = ''; //Password
 
-    const DATABASENAME = ''; //Database Name
+    const DATABASENAME = 'traffic'; //Database Name
 
     private $conn;
 

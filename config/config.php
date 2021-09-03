@@ -27,14 +27,14 @@
 $host = "localhost";
 
 /*Username */
-$dbuser = "";
+$dbuser = "root";
 
 /* Password */
 $dbpass = "";
 
 /* Database Name */
 
-$db = "";
+$db = "traffic";
 
 /* Pass Connection Variables To Mysqli Function */
 $mysqli = new mysqli($host, $dbuser, $dbpass, $db);
