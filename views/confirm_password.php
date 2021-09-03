@@ -24,7 +24,32 @@
  * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+session_start();
+require_once('../config/config.php');
+/* Confirm Passsword */
+if (isset($_POST['Confirm_Password'])) {
 
+    $login_user_name  = $_SESSION['login_user_name'];
+    $new_password = sha1(md5($_POST['new_password']));
+    $confirm_password = sha1(md5($_POST['confirm_password']));
+    /* Check If Passwords Match */
+    if ($new_password != $confirm_password) {
+        /* Die */
+        $err = "Passwords Does Not Match";
+    } else {
+        /* Update Password */
+        $query = "UPDATE login  SET  login_password =? WHERE  login_user_name = ? ";
+        $stmt = $mysqli->prepare($query);
+        //bind paramaters
+        $rc = $stmt->bind_param('ss',  $confirm_password, $login_user_name);
+        $stmt->execute();
+        if ($stmt) {
+            $success = "Password Reset" && header("refresh:1; url=../");
+        } else {
+            $err = "Password Reset Failed";
+        }
+    }
+}
 require_once('../partials/head.php');
 ?>
 
