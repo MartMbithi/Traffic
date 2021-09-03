@@ -190,7 +190,7 @@ require_once('../partials/head.php');
                                                         ?>
                                                             <tr>
                                                                 <th><?php echo $of->rule_name; ?></th>
-                                                                <th><?php echo $of->rule_charge; ?></th>
+                                                                <th>Ksh <?php echo $of->rule_charge; ?></th>
                                                                 <th><?php echo $of->rule_desc; ?></th>
                                                                 <td>
                                                                     <a data-toggle="modal" href="#update-<?php echo $of->rule_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="fa fa-pencil-alt"></i>
@@ -212,7 +212,7 @@ require_once('../partials/head.php');
                                                                                                 <div class="form-group col-md-6">
                                                                                                     <label for="">Rule Name</label>
                                                                                                     <input type="text" value="<?php echo $of->rule_name; ?>" required name="rule_name" class="form-control">
-                                                                                                    <input type="hiiden" value="<?php echo $of->rule_id; ?>" required name="rule_name" class="form-control">
+                                                                                                    <input type="hidden" value="<?php echo $of->rule_id; ?>" required name="rule_id" class="form-control">
                                                                                                 </div>
                                                                                                 <div class="form-group col-md-6">
                                                                                                     <label for="">Rule Charge</label>
@@ -220,12 +220,12 @@ require_once('../partials/head.php');
                                                                                                 </div>
                                                                                                 <div class="form-group col-md-12">
                                                                                                     <label for="">Rule Details</label>
-                                                                                                    <textarea type="text" rows="5" required name="rule_desc" class="form-control">value="<?php echo $of->rule_charge; ?>"</textarea>
+                                                                                                    <textarea type="text" rows="5" required name="rule_desc" class="form-control"><?php echo $of->rule_desc; ?></textarea>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="text-right">
-                                                                                            <button type="submit" name="add" class="btn btn-primary">Update Rule</button>
+                                                                                            <button type="submit" name="update" class="btn btn-primary">Update Rule</button>
                                                                                         </div>
                                                                                         <br>
                                                                                     </form>
