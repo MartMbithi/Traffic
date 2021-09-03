@@ -27,10 +27,42 @@
 session_start();
 require_once('../config/checklogin.php');
 require_once('../config/config.php');
+require_once('../config/codeGen.php');
 checklogin();
 /* Add Officer */
+if (isset($_POST['add_officer'])) {
+    $officer_id = $sys_gen_id;
+    $officer_login_id = $sys_gen_id_alt_1;
+    $officer_full_name = $_POST['officer_full_name'];
+    $officer_email  = $_POST['officer_email'];
+    $officer_mobile = $_POST['officer_mobile'];
+    $officer_staff_no = $_POST['officer_staff_no'];
+    $login_password = sha1(md5($_POST['login_password']));
+    $login_rank = $_POST['login_rank'];
+
+    $query = "INSERT INTO officer (officer_id, officer_login_id, officer_full_name, officer_email, officer_mobile, officer_staff_no) VALUES(?,?,?,?,?,?)";
+    $authquery = "INSERT INTO login (login_id, login_user_name, login_password, login_rank) VALUES(?,?,?,?)";
+
+    $stmt = $mysqli->prepare($query);
+    $authstmt = $mysqli->prepare($authquery);
+
+    $rc = $stmt->bind_param('ssssss', $officer_id, $officer_login_id, $officer_full_name, $officer_email, $officer_mobile, $officer_staff_no);
+    $rc = $authstmt->bind_param('ssss', $officer_login_id, $officer_email, $login_password, $login_rank);
+
+    $stmt->execute();
+    $authstmt->execute();
+
+    if ($stmt && $authstmt) {
+        $success = "Officer Added";
+    } else {
+        $info = "Please Try Again Or Try Later";
+    }
+}
+
 /* Update Officer */
+
 /* Delete Officer */
+
 require_once('../partials/head.php');
 ?>
 
@@ -127,7 +159,7 @@ require_once('../partials/head.php');
                                         <div class="card card-fluid">
                                             <!-- .card-body -->
                                             <div class="card-body">
-                                                <table class="table">
+                                                <table class="table table-">
                                                     <thead>
                                                         <tr>
                                                             <th>Staff Number </th>
@@ -148,11 +180,98 @@ require_once('../partials/head.php');
                                                                 <th><?php echo $of->officer_staff_no; ?></th>
                                                                 <th><?php echo $of->officer_full_name; ?></th>
                                                                 <th>
-                                                                    Email: <?php echo $off->officer_email; ?><br>
-                                                                    Phone:<?php echo $off->officer_mobile; ?> <br>
+                                                                    Email: <?php echo $of->officer_email; ?><br>
+                                                                    Phone:<?php echo $of->officer_mobile; ?> <br>
                                                                 </th>
                                                                 <td>
+                                                                    <a data-toggle="modal" href="#update-<?php echo $of->officer_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="fa fa-pencil-alt"></i>
+                                                                        <span class="sr-only">Edit</span></a>
+                                                                    <!-- Update Modal -->
+                                                                    <div class="modal fade" id="update-<?php echo $of->officer_id; ?>">
+                                                                        <div class="modal-dialog  modal-lg">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h4 class="modal-title">Fill All Fields </h4>
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                        <span aria-hidden="true">&times;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <!-- Add Module Form -->
+                                                                                    <form method="post" enctype="multipart/form-data" role="form">
+                                                                                        <div class="card-body">
+                                                                                            <div class="row">
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">Full Name</label>
+                                                                                                    <input type="text" value="<?php echo $of->officer_full_name; ?>" required name="officer_full_name" class="form-control">
+                                                                                                    <input type="hidden" value="<?php echo $of->officer_id; ?>" required name="officer_id" class="form-control">
+                                                                                                </div>
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">Officer Number</label>
+                                                                                                    <input type="text" value="<?php echo $of->officer_email; ?>" required name="officer_staff_no" class="form-control">
+                                                                                                </div>
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">Email Address</label>
+                                                                                                    <input type="email" value="<?php echo $of->officer_email; ?>" required name="officer_email" class="form-control">
+                                                                                                </div>
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">Mobile Numner</label>
+                                                                                                    <input type="text" value="<?php echo $of->officer_mobile; ?>" required name="officer_mobile" class="form-control">
+                                                                                                </div>
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">Login Password</label>
+                                                                                                    <input type="text" required name="login_password" class="form-control">
+                                                                                                </div>
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">Login Rank</label>
+                                                                                                    <select id="bss1" name="login_rank" class="form-control" data-toggle="selectpicker" data-width="100%">
+                                                                                                        <option><?php echo $of->login_rank; ?></option>
+                                                                                                        <option>Officer</option>
+                                                                                                        <option>Administrator</option>
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="text-right">
+                                                                                            <button type="submit" name="update_officer" class="btn btn-primary">Update Officer</button>
+                                                                                        </div>
+                                                                                        <br>
+                                                                                    </form>
+                                                                                    <!-- End Module Form -->
+                                                                                </div>
 
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- End Modal -->
+                                                                    <a data-toggle="modal" href="#delete-<?php echo $of->officer_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="far fa-trash-alt"></i>
+                                                                        <span class="sr-only">
+                                                                            Delete
+                                                                        </span>
+                                                                    </a>
+
+                                                                    <!-- Delete Modal -->
+                                                                    <div class="modal fade" id="delete-<?php echo $of->officer_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title" id="exampleModalLabel">CONFIRM DELETE</h5>
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                        <span aria-hidden="true">&times;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body text-center text-danger">
+                                                                                    <h4>Delete Officer Record</h4>
+                                                                                    <br>
+                                                                                    <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
+                                                                                    <a href="admin_officers?delete=<?php echo $of->officer_id; ?>" class="text-center btn btn-danger"> Delete </a>
+                                                                                    <br>
+                                                                                    <br>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- End Modal -->
                                                                 </td>
                                                             </tr>
                                                         <?php
