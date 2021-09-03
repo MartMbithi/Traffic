@@ -60,9 +60,61 @@ if (isset($_POST['add_officer'])) {
 }
 
 /* Update Officer */
+if (isset($_POST['update_officer'])) {
+    $officer_id = $_POST['officer_id'];
+    $officer_login_id = $_POST['officer_login_id'];
+    $officer_full_name = $_POST['officer_full_name'];
+    $officer_email  = $_POST['officer_email'];
+    $officer_mobile = $_POST['officer_mobile'];
+    $officer_staff_no = $_POST['officer_staff_no'];
+    $login_password = sha1(md5($_POST['login_password']));
+    $login_rank = $_POST['login_rank'];
+
+    $query = "UPDATE  officer SET  officer_full_name =?, officer_email =?, officer_mobile =?, officer_staff_no =? WHERE officer_id = ?";
+    $authquery = "UPDATE  login SET login_user_name =?, login_password =?, login_rank =? WHERE login_id =?";
+
+    $stmt = $mysqli->prepare($query);
+    $authstmt = $mysqli->prepare($authquery);
+
+    $rc = $stmt->bind_param('sssss', $officer_full_name, $officer_email, $officer_mobile, $officer_staff_no, $officer_id);
+    $rc = $authstmt->bind_param('ssss', $officer_email, $login_password, $login_rank, $officer_login_id);
+
+    $stmt->execute();
+    $authstmt->execute();
+
+    if ($stmt && $authstmt) {
+        $success = "Officer Account Updated";
+    } else {
+        $info = "Please Try Again Or Try Later";
+    }
+}
 
 /* Delete Officer */
+if (isset($_GET['delete'])) {
+    $delete = $_GET['delete'];
+    $login = $_GET['login'];
 
+    $adn = "DELETE FROM  officer WHERE officer_id = ? ";
+    $auth_adn = "DELETE FROM  login WHERE login_id = ? ";
+
+    $stmt = $mysqli->prepare($adn);
+    $auth_stmt = $mysqli->prepare($auth_adn);
+
+    $stmt->bind_param('s', $delete);
+    $auth_stmt->bind_param('s', $login);
+
+    $stmt->execute();
+    $auth_stmt->execute();
+
+    $stmt->close();
+    $auth_stmt->close();
+
+    if ($stmt && $auth_stmt) {
+        $success = "Deleted" && header("refresh:1; url=admin_officers");
+    } else {
+        $info = "Please Try Again Or Try Later";
+    }
+}
 require_once('../partials/head.php');
 ?>
 
@@ -205,6 +257,7 @@ require_once('../partials/head.php');
                                                                                                     <label for="">Full Name</label>
                                                                                                     <input type="text" value="<?php echo $of->officer_full_name; ?>" required name="officer_full_name" class="form-control">
                                                                                                     <input type="hidden" value="<?php echo $of->officer_id; ?>" required name="officer_id" class="form-control">
+                                                                                                    <input type="hidden" value="<?php echo $of->officer_login_id; ?>" required name="officer_login_id" class="form-control">
                                                                                                 </div>
                                                                                                 <div class="form-group col-md-6">
                                                                                                     <label for="">Officer Number</label>
@@ -264,7 +317,7 @@ require_once('../partials/head.php');
                                                                                     <h4>Delete Officer Record</h4>
                                                                                     <br>
                                                                                     <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
-                                                                                    <a href="admin_officers?delete=<?php echo $of->officer_id; ?>" class="text-center btn btn-danger"> Delete </a>
+                                                                                    <a href="admin_officers?delete=<?php echo $of->officer_id; ?>&login=<?php echo $of->officer_login_id; ?>" class="text-center btn btn-danger"> Delete </a>
                                                                                     <br>
                                                                                     <br>
                                                                                 </div>
