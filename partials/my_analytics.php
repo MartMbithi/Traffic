@@ -27,30 +27,41 @@
 
 
 /* Load Analytics */
+$login_id = $_SESSION['login_id'];
+$ret = "SELECT * FROM motorist m INNER JOIN login l ON m.motorist_login_id = l.login_id WHERE l.login_id = '$login_id' ";
+$stmt = $mysqli->prepare($ret);
+$stmt->execute(); //ok
+$res = $stmt->get_result();
+while ($of = $res->fetch_object()) {
 
 
-/* Rules */
-$query = "SELECT COUNT(*)  FROM `traffic_rules` ";
-$stmt = $mysqli->prepare($query);
-$stmt->execute();
-$stmt->bind_result($rules);
-$stmt->fetch();
-$stmt->close();
+    /* Rules */
+    $query = "SELECT COUNT(*)  FROM `traffic_rules` ";
+    $stmt = $mysqli->prepare($query);
+    $stmt->execute();
+    $stmt->bind_result($rules);
+    $stmt->fetch();
+    $stmt->close();
 
 
-/* Offences */
-$query = "SELECT COUNT(*)  FROM `offences` ";
-$stmt = $mysqli->prepare($query);
-$stmt->execute();
-$stmt->bind_result($offences);
-$stmt->fetch();
-$stmt->close();
+    /* Offences */
+    $query = "SELECT COUNT(*)  FROM `offences` WHERE offence_motorist_id = '$of->motorist_id' ";
+    $stmt = $mysqli->prepare($query);
+    $stmt->execute();
+    $stmt->bind_result($offences);
+    $stmt->fetch();
+    $stmt->close();
 
 
-/* Payments */
-$query = "SELECT SUM(payment_amount)  FROM `offenses_payments` ";
-$stmt = $mysqli->prepare($query);
-$stmt->execute();
-$stmt->bind_result($offenses_payments);
-$stmt->fetch();
-$stmt->close();
+    /* Payments */
+    $query =
+        "SELECT SUM(payment_amount) FROM offenses_payments p 
+        INNER JOIN  offences o ON p.payment_offence_id  = o.offence_id
+        INNER JOIN motorist m ON o.offence_motorist_id = m.motorist_id
+        WHERE m.motorist_id = '$of->motorist_id' ";
+    $stmt = $mysqli->prepare($query);
+    $stmt->execute();
+    $stmt->bind_result($offenses_payments);
+    $stmt->fetch();
+    $stmt->close();
+}
