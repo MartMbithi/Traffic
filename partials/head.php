@@ -36,7 +36,8 @@
     <script src="../public/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
     <script src="../public/plugins/wnumb/wNumb.min.js"></script>
     <script src="../public/plugins/nouisliderribute/nouislider.min.js"></script>
-
+    <!-- IziAlerts -->
+    <link rel="stylesheet" type="text/css" href="../public/plugins/iziToast/iziToast.min.css">
     <script>
         var skin = localStorage.getItem('skin') || 'default';
         var disabledSkinStylesheet = document.querySelector('link[data-skin]:not([data-skin="' + skin + '"])');

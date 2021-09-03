@@ -71,7 +71,7 @@ require_once('../partials/head.php');
             </div><!-- /.form-group -->
             <!-- .form-group -->
             <div class="form-group">
-                <button class="btn btn-lg btn-primary btn-block" name="login" type="submit">Reset Password</button>
+                <button class="btn btn-lg btn-primary btn-block" name="Reset_Password" type="submit">Reset Password</button>
             </div><!-- /.form-group -->
             <!-- .form-group -->
 
