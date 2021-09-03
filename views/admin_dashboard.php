@@ -104,6 +104,85 @@ require_once('../partials/head.php');
                                 </div><!-- /metric row -->
                             </div><!-- /.section-block -->
                             <!-- grid row -->
+                            <div class="row">
+                                <!-- grid column -->
+                                <div class="col-12 col-lg-12 col-xl-12">
+                                    <!-- .card -->
+                                    <div class="card card-fluid">
+                                        <!-- .card-body -->
+                                        <div class="card-body">
+                                            <h3 class="card-title mb-4"> Recently Recorded Offences </h3>
+                                            <hr>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date Recorded </th>
+                                                        <th>Location</th>
+                                                        <th>Motorist</th>
+                                                        <th>Vehicle</th>
+                                                        <th>Officer Recorded</th>
+                                                        <th>Manage</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $ret = "SELECT * FROM offences o
+                                                     INNER JOIN motorist m ON o.offence_motorist_id = m.motorist_id
+                                                     INNER JOIN officer f ON  o.offence_officer_id  = f.officer_id
+                                                     INNER JOIN vehicle_types vt ON o.offence_vehicle_type = vt.vehicle_type_id";
+                                                    $stmt = $mysqli->prepare($ret);
+                                                    $stmt->execute(); //ok
+                                                    $res = $stmt->get_result();
+                                                    while ($offence = $res->fetch_object()) {
+                                                    ?>
+                                                        <tr>
+                                                            <th><?php echo $offence->offence_date; ?></th>
+                                                            <th><?php echo $offence->offence_location; ?></th>
+                                                            <th>
+                                                                Name: <?php echo $offence->motorist_full_name; ?><br>
+                                                                Email: <?php echo $offence->motorist_email; ?><br>
+                                                                Phone:<?php echo $offence->motorist_mobile; ?> <br>
+                                                                License: <?php echo $offence->motorist_license_no; ?>
+                                                            </th>
+                                                            <th>
+                                                                <?php echo $offence->vehicle_type_name; ?>
+                                                            </th>
+                                                            <th>
+                                                                Name: <?php echo $offence->officer_full_name; ?><br>
+                                                                Email: <?php echo $offence->officer_email; ?><br>
+                                                                Mobile:<?php echo $offence->officer_mobile; ?> <br>
+                                                            </th>
+                                                            <td>
+                                                                <a class="badge badge-success" data-toggle="modal" href="#u-<?php echo $offence->offence_id; ?>">View Report</a>
+                                                                <!-- Update Modal -->
+                                                                <div class="modal fade" id="u-<?php echo $offence->offence_id; ?>">
+                                                                    <div class="modal-dialog  modal-xl">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h4 class="modal-title">Offence Report </h4>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <p>
+                                                                                    <?php echo $offence->offence_report; ?>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div><!-- /.card-body -->
+                                    </div><!-- /.card -->
+                                </div><!-- /grid column -->
+                            </div><!-- /grid row -->
                         </div><!-- /.page-section -->
                     </div><!-- /.page-inner -->
                 </div><!-- /.page -->
