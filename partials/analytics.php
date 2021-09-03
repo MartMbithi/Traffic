@@ -26,4 +26,40 @@
  */
 
 
- /* Load Analytics */
+/* Load Analytics */
+
+
+/* Officers */
+$query = "SELECT COUNT(*)  FROM `officer` ";
+$stmt = $mysqli->prepare($query);
+$stmt->execute();
+$stmt->bind_result($officers);
+$stmt->fetch();
+$stmt->close();
+
+
+/* Motorists */
+$query = "SELECT COUNT(*)  FROM `motorist` ";
+$stmt = $mysqli->prepare($query);
+$stmt->execute();
+$stmt->bind_result($motorist);
+$stmt->fetch();
+$stmt->close();
+
+
+/* Offences */
+$query = "SELECT COUNT(*)  FROM `offences` ";
+$stmt = $mysqli->prepare($query);
+$stmt->execute();
+$stmt->bind_result($offences);
+$stmt->fetch();
+$stmt->close();
+
+
+ /* Payments */
+ $query = "SELECT SUM(payment_amount)  FROM `offenses_payments` ";
+$stmt = $mysqli->prepare($query);
+$stmt->execute();
+$stmt->bind_result($offenses_payments);
+$stmt->fetch();
+$stmt->close();
