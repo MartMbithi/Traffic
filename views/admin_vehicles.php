@@ -204,7 +204,7 @@ require_once('../partials/head.php');
                                                                                                 <div class="form-group col-md-12">
                                                                                                     <label for="">Vehicle Category</label>
                                                                                                     <input type="text" required name="vehicle_type_name" value="<?php echo $of->vehicle_type_name; ?>" class="form-control">
-                                                                                                    <input type="text" required name="vehicle_type_id" value="<?php echo $of->vehicle_type_id; ?>" class="form-control">
+                                                                                                    <input type="hidden" required name="vehicle_type_id" value="<?php echo $of->vehicle_type_id; ?>" class="form-control">
                                                                                                 </div>
                                                                                                 <div class="form-group col-md-12">
                                                                                                     <label for="">Email</label>

@@ -36,6 +36,9 @@
     <script src="../public/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
     <script src="../public/plugins/wnumb/wNumb.min.js"></script>
     <script src="../public/plugins/nouisliderribute/nouislider.min.js"></script>
+    <!-- Data Tables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css" />
     <!-- IziAlerts -->
     <link rel="stylesheet" type="text/css" href="../public/plugins/iziToast/iziToast.min.css">
     <script>

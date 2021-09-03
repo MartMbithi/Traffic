@@ -65,7 +65,7 @@ require_once('../partials/head.php');
                                                     <h2 class="metric-label"> Officers </h2>
                                                     <p class="metric-value h3">
                                                         <sub><i class="fas fa-user-astronaut"></i></sub>
-                                                        <span class="value"><?php echo $officer; ?></span>
+                                                        <span class="value"><?php echo $officers; ?></span>
                                                     </p>
                                                 </a> <!-- /.metric -->
                                             </div><!-- /metric column -->
