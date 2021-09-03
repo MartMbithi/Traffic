@@ -31,5 +31,5 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 }
 $uri .= $_SERVER['HTTP_HOST'];
 /* Redirect To Index Under Views, Also Include Folder Name */
-header('Location: ' . $uri . '/DevlanInc_Lite_Framework/views/');
+header('Location: ' . $uri . '/Traffic/views/');
 exit;
