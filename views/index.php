@@ -44,10 +44,8 @@ if (isset($_POST['login'])) {
     $_SESSION['login_id'] = $login_id;
     $_SESSION['login_rank'] = $login_rank;
 
-    if ($rs && $login_rank == 'Administrator') {
+    if ($rs && ($login_rank == 'Administrator' || $login_rank == 'Officer')) {
         header("location:admin_dashboard");
-    } else if ($rs && $login_rank == 'Officer') {
-        header("location:officer_dashboard");
     } else if ($rs && $login_rank == 'Motorist') {
         header("location:motorist_dashboard");
     } else {
