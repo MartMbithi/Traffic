@@ -32,21 +32,22 @@ checklogin();
 
 /* Add  */
 if (isset($_POST['add'])) {
-    $vehicle_type_id = $sys_gen_id;
-    $vehicle_type_name = $_POST['vehicle_type_name'];
-    $vehicle_type_desc  = $_POST['vehicle_type_desc'];
-    $query = "INSERT INTO vehicle_types (vehicle_type_id, vehicle_type_name, vehicle_type_desc) VALUES(?,?,?)";
+    $rule_id = $sys_gen_id;
+    $rule_name = $_POST['rule_name'];
+    $rule_desc  = $_POST['rule_desc'];
+    $rule_charge  = $_POST['rule_charge'];
+    $query = "INSERT INTO traffic_rules (rule_id, rule_name, rule_desc, rule_charge) VALUES(?,?,?,?)";
     $stmt = $mysqli->prepare($query);
     $rc = $stmt->bind_param(
-        'sss',
-        $vehicle_type_id,
-        $vehicle_type_name,
-        $vehicle_type_desc
-
+        'ssss',
+        $rule_id,
+        $rule_name,
+        $rule_desc,
+        $rule_charge
     );
     $stmt->execute();
     if ($stmt) {
-        $success = "Vehicle Category Added";
+        $success = "Traffic Rule Added";
     } else {
         $info = "Please Try Again Or Try Later";
     }
@@ -54,36 +55,37 @@ if (isset($_POST['add'])) {
 
 /* Update  */
 if (isset($_POST['update'])) {
-    $vehicle_type_id = $_POST['vehicle_type_id'];
-    $vehicle_type_name = $_POST['vehicle_type_name'];
-    $vehicle_type_desc  = $_POST['vehicle_type_desc'];
-
-    $query = "UPDATE vehicle_types SET  vehicle_type_name =?,  vehicle_type_desc =? WHERE vehicle_type_id =? ";
+    $rule_id = $_POST['rule_id'];;
+    $rule_name = $_POST['rule_name'];
+    $rule_desc  = $_POST['rule_desc'];
+    $rule_charge  = $_POST['rule_charge'];
+    $query = "UPDATE  traffic_rules  SET rule_name =?, rule_desc =?, rule_charge =? WHERE rule_id =?";
     $stmt = $mysqli->prepare($query);
     $rc = $stmt->bind_param(
-        'sss',
-        $vehicle_type_name,
-        $vehicle_type_desc,
-        $vehicle_type_id
+        'ssss',
+        $rule_name,
+        $rule_desc,
+        $rule_charge,
+        $rule_id
     );
     $stmt->execute();
     if ($stmt) {
-        $success = "Vehicle Category Updated";
+        $success = "Traffic Rule Updated";
     } else {
         $info = "Please Try Again Or Try Later";
     }
 }
 
-/* Delete Officer */
+/* Delete  */
 if (isset($_GET['delete'])) {
     $delete = $_GET['delete'];
-    $adn = "DELETE FROM  vehicle_types WHERE vehicle_type_id = ? ";
+    $adn = "DELETE FROM  traffic_rules WHERE rule_id = ? ";
     $stmt = $mysqli->prepare($adn);
     $stmt->bind_param('s', $delete);
     $stmt->execute();
     $stmt->close();
     if ($stmt) {
-        $success = "Deleted" && header("refresh:1; url=admin_vehicles");
+        $success = "Deleted" && header("refresh:1; url=admin_traffic_rules");
     } else {
         $info = "Please Try Again Or Try Later";
     }
@@ -109,7 +111,7 @@ require_once('../partials/head.php');
                         <!-- .page-title-bar -->
                         <header class="page-title-bar">
                             <!-- page title stuff goes here -->
-                            <h1 class="page-title"> Vehicle Categories </h1>
+                            <h1 class="page-title"> Traffic Rules </h1>
                         </header><!-- /.page-title-bar -->
                         <!-- .page-section -->
                         <div class="page-section">
@@ -117,7 +119,7 @@ require_once('../partials/head.php');
                             <!-- grid column -->
                             <div class="text-right">
                                 <a href="#add_modal" class="btn btn-outline-primary" data-toggle="modal">
-                                    Add Vehicle Category
+                                    Add Traffic Rule
                                 </a>
                                 <hr>
                             </div>
@@ -136,18 +138,22 @@ require_once('../partials/head.php');
                                             <form method="post" enctype="multipart/form-data" role="form">
                                                 <div class="card-body">
                                                     <div class="row">
-                                                        <div class="form-group col-md-12">
-                                                            <label for="">Vehicle Category</label>
-                                                            <input type="text" required name="vehicle_type_name" class="form-control">
+                                                        <div class="form-group col-md-6">
+                                                            <label for="">Rule Name</label>
+                                                            <input type="text" required name="rule_name" class="form-control">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label for="">Rule Charge</label>
+                                                            <input type="text" required name="rule_charge" class="form-control">
                                                         </div>
                                                         <div class="form-group col-md-12">
-                                                            <label for="">Details</label>
-                                                            <textarea type="text" rows="5" required name="vehicle_type_desc" class="form-control"></textarea>
+                                                            <label for="">Rule Details</label>
+                                                            <textarea type="text" rows="5" required name="rule_desc" class="form-control"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="text-right">
-                                                    <button type="submit" name="add" class="btn btn-primary">Add Vehicle Category</button>
+                                                    <button type="submit" name="add" class="btn btn-primary">Add Rule</button>
                                                 </div>
                                                 <br>
                                             </form>
@@ -168,27 +174,29 @@ require_once('../partials/head.php');
                                                 <table class="table table-">
                                                     <thead>
                                                         <tr>
-                                                            <th>Type Name</th>
+                                                            <th>Name</th>
+                                                            <th>Charge</th>
                                                             <th>Details</th>
                                                             <th>Manage</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $ret = "SELECT * FROM vehicle_types ";
+                                                        $ret = "SELECT * FROM traffic_rules ";
                                                         $stmt = $mysqli->prepare($ret);
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
                                                         while ($of = $res->fetch_object()) {
                                                         ?>
                                                             <tr>
-                                                                <th><?php echo $of->vehicle_type_name; ?></th>
-                                                                <th><?php echo $of->vehicle_type_desc; ?></th>
+                                                                <th><?php echo $of->rule_name; ?></th>
+                                                                <th><?php echo $of->rule_charge; ?></th>
+                                                                <th><?php echo $of->rule_desc; ?></th>
                                                                 <td>
-                                                                    <a data-toggle="modal" href="#update-<?php echo $of->vehicle_type_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="fa fa-pencil-alt"></i>
+                                                                    <a data-toggle="modal" href="#update-<?php echo $of->rule_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="fa fa-pencil-alt"></i>
                                                                         <span class="sr-only">Edit</span></a>
                                                                     <!-- Update Modal -->
-                                                                    <div class="modal fade" id="update-<?php echo $of->vehicle_type_id; ?>">
+                                                                    <div class="modal fade" id="update-<?php echo $of->rule_id; ?>">
                                                                         <div class="modal-dialog  modal-lg">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
@@ -201,19 +209,23 @@ require_once('../partials/head.php');
                                                                                     <form method="post" enctype="multipart/form-data" role="form">
                                                                                         <div class="card-body">
                                                                                             <div class="row">
-                                                                                                <div class="form-group col-md-12">
-                                                                                                    <label for="">Vehicle Category</label>
-                                                                                                    <input type="text" required name="vehicle_type_name" value="<?php echo $of->vehicle_type_name; ?>" class="form-control">
-                                                                                                    <input type="hidden" required name="vehicle_type_id" value="<?php echo $of->vehicle_type_id; ?>" class="form-control">
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">Rule Name</label>
+                                                                                                    <input type="text" value="<?php echo $of->rule_name; ?>" required name="rule_name" class="form-control">
+                                                                                                    <input type="hiiden" value="<?php echo $of->rule_id; ?>" required name="rule_name" class="form-control">
+                                                                                                </div>
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">Rule Charge</label>
+                                                                                                    <input type="text" required name="rule_charge" value="<?php echo $of->rule_charge; ?>" class="form-control">
                                                                                                 </div>
                                                                                                 <div class="form-group col-md-12">
-                                                                                                    <label for="">Details</label>
-                                                                                                    <textarea type="text" rows="5" required name="vehicle_type_desc" class="form-control"><?php echo $of->vehicle_type_desc; ?></textarea>
+                                                                                                    <label for="">Rule Details</label>
+                                                                                                    <textarea type="text" rows="5" required name="rule_desc" class="form-control">value="<?php echo $of->rule_charge; ?>"</textarea>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="text-right">
-                                                                                            <button type="submit" name="update" class="btn btn-primary">Update Vehicle Category</button>
+                                                                                            <button type="submit" name="add" class="btn btn-primary">Update Rule</button>
                                                                                         </div>
                                                                                         <br>
                                                                                     </form>
@@ -225,7 +237,7 @@ require_once('../partials/head.php');
                                                                     if ($_SESSION['login_rank'] == 'Administrator') {
                                                                     ?>
                                                                         <!-- End Modal -->
-                                                                        <a data-toggle="modal" href="#delete-<?php echo $of->vehicle_type_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="far fa-trash-alt"></i>
+                                                                        <a data-toggle="modal" href="#delete-<?php echo $of->rule_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="far fa-trash-alt"></i>
                                                                             <span class="sr-only">
                                                                                 Delete
                                                                             </span>
@@ -234,7 +246,7 @@ require_once('../partials/head.php');
                                                                     } ?>
 
                                                                     <!-- Delete Modal -->
-                                                                    <div class="modal fade" id="delete-<?php echo $of->vehicle_type_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                    <div class="modal fade" id="delete-<?php echo $of->rule_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
@@ -244,10 +256,10 @@ require_once('../partials/head.php');
                                                                                     </button>
                                                                                 </div>
                                                                                 <div class="modal-body text-center text-danger">
-                                                                                    <h4>Delete Vehicle Type Record</h4>
+                                                                                    <h4>Delete Traffic Rule Record</h4>
                                                                                     <br>
                                                                                     <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
-                                                                                    <a href="admin_vehicles?delete=<?php echo $of->vehicle_type_id; ?>" class="text-center btn btn-danger"> Delete </a>
+                                                                                    <a href="admin_traffic_rules?delete=<?php echo $of->rule_id; ?>" class="text-center btn btn-danger"> Delete </a>
                                                                                     <br>
                                                                                     <br>
                                                                                 </div>
