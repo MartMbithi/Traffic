@@ -33,6 +33,7 @@ checklogin();
 if (isset($_POST['add'])) {
     $motorist_id = $sys_gen_id;
     $motorist_login_id = $sys_gen_id_alt_1;
+
     $motorist_full_name = $_POST['motorist_full_name'];
     $motorist_email  = $_POST['motorist_email'];
     $motorist_mobile = $_POST['motorist_mobile'];
@@ -43,8 +44,7 @@ if (isset($_POST['add'])) {
     $login_password = sha1(md5($_POST['login_password']));
     $login_rank = $_POST['login_rank'];
 
-    $query = "INSERT INTO motorist (motorist_id, motorist_login_id, 
-    motorist_full_name,  motorist_email, motorist_mobile, motorist_id_no, motorist_license_no,  motorist_dob ) VALUES(?,?,?,?,?,?,?,?)";
+    $query = "INSERT INTO motorist (motorist_id, motorist_login_id, motorist_full_name,  motorist_email, motorist_mobile, motorist_id_no, motorist_license_no,  motorist_dob) VALUES(?,?,?,?,?,?,?,?)";
     $authquery = "INSERT INTO login (login_id, login_user_name, login_password, login_rank) VALUES(?,?,?,?)";
 
     $stmt = $mysqli->prepare($query);
@@ -201,7 +201,7 @@ require_once('../partials/head.php');
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label for="">Mobile</label>
-                                                            <input type="email" required name="motorist_mobile" class="form-control">
+                                                            <input type="text" required name="motorist_mobile" class="form-control">
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label for="">ID No</label>
@@ -210,10 +210,6 @@ require_once('../partials/head.php');
                                                         <div class="form-group col-md-6">
                                                             <label for="">License Number</label>
                                                             <input type="text" required name="motorist_license_no" class="form-control">
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            <label for="">DOB</label>
-                                                            <input type="date" required name="motorist_dob" class="form-control">
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label for="">DOB</label>
