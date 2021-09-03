@@ -34,16 +34,14 @@ checklogin();
 /* Update  */
 if (isset($_POST['update'])) {
     $payment_id = $_POST['payment_id'];
-    $payment_ref = $_POST['payment_ref'];
     $payment_date  = $_POST['payment_date'];
     $payment_transaction_no  = $_POST['payment_transaction_no'];
     $payment_amount  = $_POST['payment_amount'];
 
-    $query = "UPDATE offenses_payments SET payment_ref =?, payment_date =?, payment_transaction_no =?, payment_amount =? WHERE payment_id =?";
+    $query = "UPDATE offenses_payments SET  payment_date =?, payment_transaction_no =?, payment_amount =? WHERE payment_id =?";
     $stmt = $mysqli->prepare($query);
     $rc = $stmt->bind_param(
-        'sssss',
-        $payment_ref,
+        'ssss',
         $payment_date,
         $payment_transaction_no,
         $payment_amount,
@@ -149,7 +147,6 @@ require_once('../partials/head.php');
                                                                 </th>
 
                                                                 <td>
-
                                                                     <!-- Report -->
                                                                     <a data-toggle="modal" href="#update-<?php echo $offence->offence_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="fa fa-pencil-alt"></i>
                                                                         <span class="sr-only">Edit</span>
@@ -165,9 +162,30 @@ require_once('../partials/head.php');
                                                                                     </button>
                                                                                 </div>
                                                                                 <div class="modal-body">
-
+                                                                                    <form method="post" enctype="multipart/form-data" role="form">
+                                                                                        <div class="card-body">
+                                                                                            <div class="row">
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">Payment Date </label>
+                                                                                                    <input type="date" value="<?php echo $offence->payment_date; ?>" required name="payment_date" class="form-control">
+                                                                                                    <input type="hidden" value="<?php echo $offence->payment_id; ?>" required name="payment_id" class="form-control">
+                                                                                                </div>
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">Transaction Number</label>
+                                                                                                    <input type="text" value="<?php echo $offence->payment_transaction_no; ?>" required name="payment_transaction_no" class="form-control">
+                                                                                                </div>
+                                                                                                <div class="form-group col-md-12">
+                                                                                                    <label for="">Amount Paid (Ksh)</label>
+                                                                                                    <input type="text" value="<?php echo $offence->payment_amount; ?>" required name="payment_amount" class="form-control">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="text-right">
+                                                                                            <button type="submit" name="update" class="btn btn-primary">Update Payment</button>
+                                                                                        </div>
+                                                                                        <br>
+                                                                                    </form>
                                                                                 </div>
-
                                                                             </div>
                                                                         </div>
                                                                     </div>
