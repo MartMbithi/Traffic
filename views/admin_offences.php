@@ -106,6 +106,36 @@ if (isset($_GET['delete'])) {
         $info = "Please Try Again Or Try Later";
     }
 }
+
+/* Add Payment */
+if (isset($_POST['pay'])) {
+    $payment_id = $sys_gen_id;
+    $payment_ref  = $sys_gen_paycode;
+    $payment_date  = $_POST['payment_date'];
+    $payment_offence_id  = $_POST['payment_offence_id'];
+    $payment_transaction_no  = $_POST['payment_transaction_no'];
+    $payment_amount  = $_POST['payment_amount'];
+
+    $query = "INSERT INTO offenses_payments (payment_id, payment_ref, payment_date, payment_offence_id, payment_transaction_no, 
+     payment_amount)
+      VALUES(?,?,?,?,?,?)";
+    $stmt = $mysqli->prepare($query);
+    $rc = $stmt->bind_param(
+        'ssssss',
+        $payment_id,
+        $payment_ref,
+        $payment_date,
+        $payment_offence_id,
+        $payment_transaction_no,
+        $payment_amount
+    );
+    $stmt->execute();
+    if ($stmt) {
+        $success = "Traffic Offense Fine Paid";
+    } else {
+        $info = "Please Try Again Or Try Later";
+    }
+}
 require_once('../partials/head.php');
 ?>
 
@@ -280,6 +310,48 @@ require_once('../partials/head.php');
                                                                     Staff No: <?php echo $offence->officer_staff_no; ?>
                                                                 </th>
                                                                 <td>
+                                                                    <a data-toggle="modal" href="#pay-<?php echo $offence->offence_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="fa fa-dollar-sign"></i>
+                                                                        <span class="sr-only">view</span>
+                                                                    </a>
+                                                                    <!-- Pay Modal -->
+                                                                    <div class="modal fade" id="pay-<?php echo $offence->offence_id; ?>">
+                                                                        <div class="modal-dialog  modal-xl">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h4 class="modal-title">Fill All Fields </h4>
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                        <span aria-hidden="true">&times;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <form method="post" enctype="multipart/form-data" role="form">
+                                                                                        <div class="card-body">
+                                                                                            <div class="row">
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">Payment Date </label>
+                                                                                                    <input type="date" required name="payment_date" class="form-control">
+                                                                                                    <input type="hidden" value="<?php echo $offence->offence_id; ?>" required name="payment_offence_id" class="form-control">
+                                                                                                </div>
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">Transaction Number</label>
+                                                                                                    <input type="text" required name="payment_transaction_no" class="form-control">
+                                                                                                </div>
+                                                                                                <div class="form-group col-md-12">
+                                                                                                    <label for="">Amount Paid (Ksh)</label>
+                                                                                                    <input type="text" required name="payment_amount" class="form-control">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="text-right">
+                                                                                            <button type="submit" name="pay" class="btn btn-primary">Pay Offense</button>
+                                                                                        </div>
+                                                                                        <br>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- End Pay Modal -->
                                                                     <a data-toggle="modal" href="#u-<?php echo $offence->offence_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="fa fa-eye"></i>
                                                                         <span class="sr-only">view</span>
                                                                     </a>

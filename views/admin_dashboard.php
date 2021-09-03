@@ -142,7 +142,7 @@ require_once('../partials/head.php');
                                                             <th><?php echo $offence->offence_date; ?></th>
                                                             <th><?php echo $offence->offence_location; ?></th>
                                                             <th>
-                                                                Name:  <?php echo $offence->motorist_full_name; ?><br>
+                                                                Name: <?php echo $offence->motorist_full_name; ?><br>
                                                                 Email: <?php echo $offence->motorist_email; ?><br>
                                                                 Phone: <?php echo $offence->motorist_mobile; ?> <br>
                                                             </th>
@@ -156,7 +156,7 @@ require_once('../partials/head.php');
                                                             </th>
                                                             <td>
                                                                 <a class="badge badge-success" data-toggle="modal" href="#u-<?php echo $offence->offence_id; ?>">View Report</a>
-                                                               
+
                                                                 <!-- Update Modal -->
                                                                 <div class="modal fade" id="u-<?php echo $offence->offence_id; ?>">
                                                                     <div class="modal-dialog  modal-xl">
