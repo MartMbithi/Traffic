@@ -24,7 +24,34 @@
  * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+session_start();
+require_once('../config/config.php');
+/* Login */
+if (isset($_POST['login'])) {
+    $login_user_name = trim($_POST['login_user_name']);
+    $login_password = sha1(md5($_POST['login_password']));
+    $login_rank  = $_POST['login_rank'];
+    $stmt = $mysqli->prepare("SELECT login_user_name, login_password, login_rank, login_id
+    FROM login  WHERE  login_user_name =? AND login_password =? AND login_rank=?");
+    $stmt->bind_param('sss', $login_username, $login_password, $login_rank);
+    $stmt->execute();
+    $stmt->bind_result($login_user_name, $login_password, $login_rank, $login_id);
+    $rs = $stmt->fetch();
 
+    //Persist User Sessions
+    $_SESSION['login_id'] = $login_id;
+    $_SESSION['login_rank'] = $login_rank;
+
+    if ($rs && $login_rank == 'Administrator') {
+        header("location:admin_dashboard");
+    } else if ($rs && $login_rank == 'Officer') {
+        header("location:officer_dashboard");
+    } else if ($rs && $login_rank == 'Motorist') {
+        header("location:motorist_dashboard");
+    } else {
+        $err = "Incorrect Login Username, Login Rank Or Password";
+    }
+}
 require_once('../partials/head.php');
 ?>
 
@@ -53,7 +80,7 @@ require_once('../partials/head.php');
             <div class="form-group">
                 <div class="form-label-group">
                     <label class="control-label">Login In As</label>
-                    <select id="bss1" class="form-control" data-toggle="selectpicker" data-width="100%">
+                    <select id="bss1" name="login_rank" class="form-control" data-toggle="selectpicker" data-width="100%">
                         <option>Administrator</option>
                         <option>Officer</option>
                         <option>Motorist</option>
