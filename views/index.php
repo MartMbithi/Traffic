@@ -29,12 +29,14 @@ session_start();
 require_once('../config/config.php');
 /* Login */
 if (isset($_POST['login'])) {
+
     $login_user_name = trim($_POST['login_user_name']);
     $login_password = sha1(md5($_POST['login_password']));
     $login_rank  = $_POST['login_rank'];
-    $stmt = $mysqli->prepare("SELECT login_user_name, login_password, login_rank, login_id
-    FROM login  WHERE  login_user_name =? AND login_password =? AND login_rank=?");
-    $stmt->bind_param('sss', $login_username, $login_password, $login_rank);
+
+    $stmt = $mysqli->prepare("SELECT *
+    FROM login  WHERE  login_user_name =? AND login_password =? AND login_rank =?");
+    $stmt->bind_param('sss', $login_user_name, $login_password, $login_rank);
     $stmt->execute();
     $stmt->bind_result($login_user_name, $login_password, $login_rank, $login_id);
     $rs = $stmt->fetch();
