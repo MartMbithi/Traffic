@@ -86,7 +86,7 @@ while ($user = $res->fetch_object()) {
                             </a>
                         </li><!-- /.menu-item -->
                         <li class="menu-item ">
-                            <a href="admin_vvehicles" class="menu-link">
+                            <a href="admin_vehicles" class="menu-link">
                                 <span class="menu-icon fas fa-car"></span>
                                 <span class="menu-text">Vehicles</span>
                             </a>

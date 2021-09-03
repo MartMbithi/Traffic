@@ -363,7 +363,7 @@ require_once('../partials/head.php');
                                                                                     </button>
                                                                                 </div>
                                                                                 <div class="modal-body text-center text-danger">
-                                                                                    <h4>Delete Officer Record</h4>
+                                                                                    <h4>Delete Record</h4>
                                                                                     <br>
                                                                                     <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
                                                                                     <a href="admin_motorists?delete=<?php echo $of->motorist_id; ?>&login=<?php echo $of->motorist_login_id; ?>" class="text-center btn btn-danger"> Delete </a>
