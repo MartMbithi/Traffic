@@ -1,6 +1,11 @@
 <?php
 /*
- * Created on Mon Aug 09 2021
+ * Created on Fri Sep 03 2021
+ *
+ * Mart Developers Inc
+ * https://martdev.info
+ * martdevelopers254@gmail.com
+ * +254 740 847 563 / +254 737 229 776
  *
  * The MIT License (MIT)
  * Copyright (c) 2021 Devlan Inc
@@ -21,6 +26,7 @@
  */
 
 
+
 /*
 	* Register Check Login Functions Here
 	* Pass Session Variables 
@@ -28,11 +34,11 @@
 
 function checklogin()
 {
-	if ((strlen($_SESSION['id']) == 0)) {
+	if ((strlen($_SESSION['login_id']) == 0)) {
 		$host = $_SERVER['HTTP_HOST'];
 		$uri  = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-		$extra = "../index";
-		$_SESSION["id"] = "";
+		$extra = "../";
+		$_SESSION["login_id"] = "";
 		header("Location: http://$host$uri/$extra");
 	}
 }
