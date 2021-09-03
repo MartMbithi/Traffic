@@ -317,7 +317,7 @@ require_once('../partials/head.php');
                                                                                 </div>
                                                                                 <div class="modal-body">
                                                                                     <form method="post" enctype="multipart/form-data" role="form">
-                                                                                        <div class="card-body">offence_id
+                                                                                        <div class="card-body">
                                                                                             <div class="row">
                                                                                                 <div class="form-group col-md-6">
                                                                                                     <label for="">Date Recorded</label>
