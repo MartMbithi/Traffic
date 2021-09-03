@@ -30,60 +30,88 @@ require_once('../config/config.php');
 require_once('../config/codeGen.php');
 checklogin();
 /* Add Officer */
-if (isset($_POST['add_officer'])) {
-    $officer_id = $sys_gen_id;
-    $officer_login_id = $sys_gen_id_alt_1;
-    $officer_full_name = $_POST['officer_full_name'];
-    $officer_email  = $_POST['officer_email'];
-    $officer_mobile = $_POST['officer_mobile'];
-    $officer_staff_no = $_POST['officer_staff_no'];
+if (isset($_POST['add'])) {
+    $motorist_id = $sys_gen_id;
+    $motorist_login_id = $sys_gen_id_alt_1;
+    $motorist_full_name = $_POST['motorist_full_name'];
+    $motorist_email  = $_POST['motorist_email'];
+    $motorist_mobile = $_POST['motorist_mobile'];
+    $motorist_id_no = $_POST['motorist_id_no'];
+    $motorist_license_no = $_POST['motorist_license_no'];
+    $motorist_dob = $_POST['motorist_dob'];
+
     $login_password = sha1(md5($_POST['login_password']));
     $login_rank = $_POST['login_rank'];
 
-    $query = "INSERT INTO officer (officer_id, officer_login_id, officer_full_name, officer_email, officer_mobile, officer_staff_no) VALUES(?,?,?,?,?,?)";
+    $query = "INSERT INTO motorist (motorist_id, motorist_login_id, 
+    motorist_full_name,  motorist_email, motorist_mobile, motorist_id_no, motorist_license_no,  motorist_dob ) VALUES(?,?,?,?,?,?,?,?)";
     $authquery = "INSERT INTO login (login_id, login_user_name, login_password, login_rank) VALUES(?,?,?,?)";
 
     $stmt = $mysqli->prepare($query);
     $authstmt = $mysqli->prepare($authquery);
 
-    $rc = $stmt->bind_param('ssssss', $officer_id, $officer_login_id, $officer_full_name, $officer_email, $officer_mobile, $officer_staff_no);
-    $rc = $authstmt->bind_param('ssss', $officer_login_id, $officer_email, $login_password, $login_rank);
+    $rc = $stmt->bind_param(
+        'ssssssss',
+        $motorist_id,
+        $motorist_login_id,
+        $motorist_full_name,
+        $motorist_email,
+        $motorist_mobile,
+        $motorist_id_no,
+        $motorist_license_no,
+        $motorist_dob
+    );
+    $rc = $authstmt->bind_param('ssss', $motorist_login_id, $motorist_email, $login_password, $login_rank);
 
     $stmt->execute();
     $authstmt->execute();
 
     if ($stmt && $authstmt) {
-        $success = "Officer Added";
+        $success = "Motoriest Added";
     } else {
         $info = "Please Try Again Or Try Later";
     }
 }
 
 /* Update Officer */
-if (isset($_POST['update_officer'])) {
-    $officer_id = $_POST['officer_id'];
-    $officer_login_id = $_POST['officer_login_id'];
-    $officer_full_name = $_POST['officer_full_name'];
-    $officer_email  = $_POST['officer_email'];
-    $officer_mobile = $_POST['officer_mobile'];
-    $officer_staff_no = $_POST['officer_staff_no'];
+if (isset($_POST['update'])) {
+    $motorist_id = $_POST['motorist_id'];
+    $motorist_login_id = $_POST['motorist_login_id'];
+    $motorist_full_name = $_POST['motorist_full_name'];
+    $motorist_email  = $_POST['motorist_email'];
+    $motorist_mobile = $_POST['motorist_mobile'];
+    $motorist_id_no = $_POST['motorist_id_no'];
+    $motorist_license_no = $_POST['motorist_license_no'];
+    $motorist_dob = $_POST['motorist_dob'];
+
     $login_password = sha1(md5($_POST['login_password']));
     $login_rank = $_POST['login_rank'];
 
-    $query = "UPDATE  officer SET  officer_full_name =?, officer_email =?, officer_mobile =?, officer_staff_no =? WHERE officer_id = ?";
-    $authquery = "UPDATE  login SET login_user_name =?, login_password =?, login_rank =? WHERE login_id =?";
+    $query = "UPDATE motorist 
+    SET  motorist_full_name =?,  motorist_email =?, motorist_mobile =?,
+     motorist_id_no =?, motorist_license_no =?,  motorist_dob =? WHERE motorist_id=? ";
+    $authquery = "UPDATE  login SET  login_user_name =?, login_password =?, login_rank =? WHERE login_id =?";
 
     $stmt = $mysqli->prepare($query);
     $authstmt = $mysqli->prepare($authquery);
 
-    $rc = $stmt->bind_param('sssss', $officer_full_name, $officer_email, $officer_mobile, $officer_staff_no, $officer_id);
-    $rc = $authstmt->bind_param('ssss', $officer_email, $login_password, $login_rank, $officer_login_id);
+    $rc = $stmt->bind_param(
+        'sssssss',
+        $motorist_full_name,
+        $motorist_email,
+        $motorist_mobile,
+        $motorist_id_no,
+        $motorist_license_no,
+        $motorist_dob,
+        $motorist_id
+    );
+    $rc = $authstmt->bind_param('ssss',  $motorist_email, $login_password, $login_rank, $motorist_login_id);
 
     $stmt->execute();
     $authstmt->execute();
 
     if ($stmt && $authstmt) {
-        $success = "Officer Account Updated";
+        $success = "Motoriest Updated";
     } else {
         $info = "Please Try Again Or Try Later";
     }
@@ -94,7 +122,7 @@ if (isset($_GET['delete'])) {
     $delete = $_GET['delete'];
     $login = $_GET['login'];
 
-    $adn = "DELETE FROM  officer WHERE officer_id = ? ";
+    $adn = "DELETE FROM  motorist WHERE motorist_id = ? ";
     $auth_adn = "DELETE FROM  login WHERE login_id = ? ";
 
     $stmt = $mysqli->prepare($adn);
@@ -110,7 +138,7 @@ if (isset($_GET['delete'])) {
     $auth_stmt->close();
 
     if ($stmt && $auth_stmt) {
-        $success = "Deleted" && header("refresh:1; url=admin_officers");
+        $success = "Deleted" && header("refresh:1; url=admin_motorists");
     } else {
         $info = "Please Try Again Or Try Later";
     }
@@ -136,7 +164,7 @@ require_once('../partials/head.php');
                         <!-- .page-title-bar -->
                         <header class="page-title-bar">
                             <!-- page title stuff goes here -->
-                            <h1 class="page-title"> Traffic Officers </h1>
+                            <h1 class="page-title"> Motorists </h1>
                         </header><!-- /.page-title-bar -->
                         <!-- .page-section -->
                         <div class="page-section">
@@ -144,7 +172,7 @@ require_once('../partials/head.php');
                             <!-- grid column -->
                             <div class="text-right">
                                 <a href="#add_modal" class="btn btn-outline-primary" data-toggle="modal">
-                                    Add Traffic Officer
+                                    Add Motorist
                                 </a>
                                 <hr>
                             </div>
@@ -165,19 +193,31 @@ require_once('../partials/head.php');
                                                     <div class="row">
                                                         <div class="form-group col-md-6">
                                                             <label for="">Full Name</label>
-                                                            <input type="text" required name="officer_full_name" class="form-control">
+                                                            <input type="text" required name="motorist_full_name" class="form-control">
                                                         </div>
                                                         <div class="form-group col-md-6">
-                                                            <label for="">Officer Number</label>
-                                                            <input type="text" required name="officer_staff_no" class="form-control">
+                                                            <label for="">Email</label>
+                                                            <input type="text" required name="motorist_email" class="form-control">
                                                         </div>
                                                         <div class="form-group col-md-6">
-                                                            <label for="">Email Address</label>
-                                                            <input type="email" required name="officer_email" class="form-control">
+                                                            <label for="">Mobile</label>
+                                                            <input type="email" required name="motorist_mobile" class="form-control">
                                                         </div>
                                                         <div class="form-group col-md-6">
-                                                            <label for="">Mobile Numner</label>
-                                                            <input type="text" required name="officer_mobile" class="form-control">
+                                                            <label for="">ID No</label>
+                                                            <input type="text" required name="motorist_id_no" class="form-control">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label for="">License Number</label>
+                                                            <input type="text" required name="motorist_license_no" class="form-control">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label for="">DOB</label>
+                                                            <input type="date" required name="motorist_dob" class="form-control">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label for="">DOB</label>
+                                                            <input type="date" required name="motorist_dob" class="form-control">
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label for="">Login Password</label>
@@ -186,14 +226,13 @@ require_once('../partials/head.php');
                                                         <div class="form-group col-md-6">
                                                             <label for="">Login Rank</label>
                                                             <select id="bss1" name="login_rank" class="form-control" data-toggle="selectpicker" data-width="100%">
-                                                                <option>Officer</option>
-                                                                <option>Administrator</option>
+                                                                <option>Motorist</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="text-right">
-                                                    <button type="submit" name="add_officer" class="btn btn-primary">Add Officer</button>
+                                                    <button type="submit" name="add" class="btn btn-primary">Add Motorist</button>
                                                 </div>
                                                 <br>
                                             </form>
@@ -214,32 +253,36 @@ require_once('../partials/head.php');
                                                 <table class="table table-">
                                                     <thead>
                                                         <tr>
-                                                            <th>Staff Number </th>
                                                             <th>Full Name</th>
+                                                            <th>DOB</th>
+                                                            <th>ID No</th>
                                                             <th>Contacts</th>
+                                                            <th>License</th>
                                                             <th>Manage</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $ret = "SELECT * FROM officer f INNER JOIN login l ON f.officer_login_id = l.login_id ";
+                                                        $ret = "SELECT * FROM motorist m INNER JOIN login l ON m.motorist_login_id = l.login_id ";
                                                         $stmt = $mysqli->prepare($ret);
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
                                                         while ($of = $res->fetch_object()) {
                                                         ?>
                                                             <tr>
-                                                                <th><?php echo $of->officer_staff_no; ?></th>
-                                                                <th><?php echo $of->officer_full_name; ?></th>
+                                                                <th><?php echo $of->motorist_full_name; ?></th>
+                                                                <th><?php echo $of->motorist_dob; ?></th>
+                                                                <th><?php echo $of->motorist_id_no; ?></th>
                                                                 <th>
-                                                                    Email: <?php echo $of->officer_email; ?><br>
-                                                                    Phone:<?php echo $of->officer_mobile; ?> <br>
+                                                                    Email: <?php echo $of->motorist_email; ?><br>
+                                                                    Phone:<?php echo $of->motorist_mobile; ?> <br>
                                                                 </th>
+                                                                <th><?php echo $of->motorist_license_no; ?></th>
                                                                 <td>
-                                                                    <a data-toggle="modal" href="#update-<?php echo $of->officer_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="fa fa-pencil-alt"></i>
+                                                                    <a data-toggle="modal" href="#update-<?php echo $of->motorist_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="fa fa-pencil-alt"></i>
                                                                         <span class="sr-only">Edit</span></a>
                                                                     <!-- Update Modal -->
-                                                                    <div class="modal fade" id="update-<?php echo $of->officer_id; ?>">
+                                                                    <div class="modal fade" id="update-<?php echo $of->motorist_id; ?>">
                                                                         <div class="modal-dialog  modal-lg">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
@@ -249,27 +292,35 @@ require_once('../partials/head.php');
                                                                                     </button>
                                                                                 </div>
                                                                                 <div class="modal-body">
-                                                                                    <!-- Add Module Form -->
                                                                                     <form method="post" enctype="multipart/form-data" role="form">
                                                                                         <div class="card-body">
                                                                                             <div class="row">
                                                                                                 <div class="form-group col-md-6">
                                                                                                     <label for="">Full Name</label>
-                                                                                                    <input type="text" value="<?php echo $of->officer_full_name; ?>" required name="officer_full_name" class="form-control">
-                                                                                                    <input type="hidden" value="<?php echo $of->officer_id; ?>" required name="officer_id" class="form-control">
-                                                                                                    <input type="hidden" value="<?php echo $of->officer_login_id; ?>" required name="officer_login_id" class="form-control">
+                                                                                                    <input type="text" value="<?php echo $of->motorist_full_name; ?>" required name="motorist_full_name" class="form-control">
+                                                                                                    <input type="hidden" value="<?php echo $of->motorist_id; ?>" required name="motorist_id" class="form-control">
+                                                                                                    <input type="hidden" value="<?php echo $of->motorist_login_id; ?>" required name="motorist_login_id" class="form-control">
                                                                                                 </div>
                                                                                                 <div class="form-group col-md-6">
-                                                                                                    <label for="">Officer Number</label>
-                                                                                                    <input type="text" value="<?php echo $of->officer_staff_no; ?>" required name="officer_staff_no" class="form-control">
+                                                                                                    <label for="">Email</label>
+                                                                                                    <input type="text" value="<?php echo $of->motorist_email; ?>" required name="motorist_email" class="form-control">
                                                                                                 </div>
                                                                                                 <div class="form-group col-md-6">
-                                                                                                    <label for="">Email Address</label>
-                                                                                                    <input type="email" value="<?php echo $of->officer_email; ?>" required name="officer_email" class="form-control">
+                                                                                                    <label for="">Mobile</label>
+                                                                                                    <input type="text" value="<?php echo $of->motorist_mobile; ?>" required name="motorist_mobile" class="form-control">
                                                                                                 </div>
                                                                                                 <div class="form-group col-md-6">
-                                                                                                    <label for="">Mobile Numner</label>
-                                                                                                    <input type="text" value="<?php echo $of->officer_mobile; ?>" required name="officer_mobile" class="form-control">
+                                                                                                    <label for="">ID No</label>
+                                                                                                    <input type="text" value="<?php echo $of->motorist_id_no; ?>" required name="motorist_id_no" class="form-control">
+                                                                                                </div>
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">License Number</label>
+                                                                                                    <input type="text" value="<?php echo $of->motorist_license_no; ?>" required name="motorist_license_no" class="form-control">
+                                                                                                </div>
+
+                                                                                                <div class="form-group col-md-6">
+                                                                                                    <label for="">DOB</label>
+                                                                                                    <input type="date" required value="<?php echo $of->motorist_dob; ?>" name="motorist_dob" class="form-control">
                                                                                                 </div>
                                                                                                 <div class="form-group col-md-6">
                                                                                                     <label for="">Login Password</label>
@@ -278,19 +329,16 @@ require_once('../partials/head.php');
                                                                                                 <div class="form-group col-md-6">
                                                                                                     <label for="">Login Rank</label>
                                                                                                     <select id="bss1" name="login_rank" class="form-control" data-toggle="selectpicker" data-width="100%">
-                                                                                                        <option><?php echo $of->login_rank; ?></option>
-                                                                                                        <option>Officer</option>
-                                                                                                        <option>Administrator</option>
+                                                                                                        <option>Motorist</option>
                                                                                                     </select>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="text-right">
-                                                                                            <button type="submit" name="update_officer" class="btn btn-primary">Update Officer</button>
+                                                                                            <button type="submit" name="update" class="btn btn-primary">Update Motorist</button>
                                                                                         </div>
                                                                                         <br>
                                                                                     </form>
-                                                                                    <!-- End Module Form -->
                                                                                 </div>
 
                                                                             </div>
@@ -300,7 +348,7 @@ require_once('../partials/head.php');
                                                                     if ($_SESSION['login_rank'] == 'Administrator') {
                                                                     ?>
                                                                         <!-- End Modal -->
-                                                                        <a data-toggle="modal" href="#delete-<?php echo $of->officer_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="far fa-trash-alt"></i>
+                                                                        <a data-toggle="modal" href="#delete-<?php echo $of->motorist_id; ?>" class="btn btn-sm btn-icon btn-secondary"><i class="far fa-trash-alt"></i>
                                                                             <span class="sr-only">
                                                                                 Delete
                                                                             </span>
@@ -309,7 +357,7 @@ require_once('../partials/head.php');
                                                                     } ?>
 
                                                                     <!-- Delete Modal -->
-                                                                    <div class="modal fade" id="delete-<?php echo $of->officer_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                    <div class="modal fade" id="delete-<?php echo $of->motorist_id; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
@@ -322,7 +370,7 @@ require_once('../partials/head.php');
                                                                                     <h4>Delete Officer Record</h4>
                                                                                     <br>
                                                                                     <button type="button" class="text-center btn btn-success" data-dismiss="modal">No</button>
-                                                                                    <a href="admin_officers?delete=<?php echo $of->officer_id; ?>&login=<?php echo $of->officer_login_id; ?>" class="text-center btn btn-danger"> Delete </a>
+                                                                                    <a href="admin_motorists?delete=<?php echo $of->motorist_id; ?>&login=<?php echo $of->motorist_login_id; ?>" class="text-center btn btn-danger"> Delete </a>
                                                                                     <br>
                                                                                     <br>
                                                                                 </div>
