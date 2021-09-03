@@ -38,7 +38,7 @@ require_once('../partials/head.php');
         <!-- .app-header -->
         <?php require_once('../partials/header.php'); ?>
         <!-- .app-aside -->
-        <?php require_once('../partials/aside.php'); ?>
+        <?php require_once('../partials/my_aside.php'); ?>
         <!-- .app-main -->
         <main class="app-main">
             <!-- .wrapper -->
@@ -50,7 +50,7 @@ require_once('../partials/head.php');
                         <!-- .page-title-bar -->
                         <header class="page-title-bar">
                             <!-- page title stuff goes here -->
-                            <h1 class="page-title"> Traffic Offences Charges Payments Reports </h1>
+                            <h1 class="page-title"> My Traffic Offences Charges Payments Reports </h1>
                         </header><!-- /.page-title-bar -->
                         <!-- .page-section -->
                         <div class="page-section">
@@ -73,10 +73,12 @@ require_once('../partials/head.php');
                                                     </thead>
                                                     <tbody>
                                                         <?php
+                                                        $login_id = $_SESSION['login_id'];
                                                         $ret = "SELECT * FROM offenses_payments p INNER JOIN  offences o ON p.payment_offence_id  = o.offence_id
                                                         INNER JOIN motorist m ON o.offence_motorist_id = m.motorist_id
                                                         INNER JOIN traffic_rules tr ON tr.rule_id = o.offence_rule_id
-                                                        INNER JOIN vehicle_types vt ON o.offence_vehicle_type = vt.vehicle_type_id";
+                                                        INNER JOIN vehicle_types vt ON o.offence_vehicle_type = vt.vehicle_type_id
+                                                        WHERE m.motorist_login_id = '$login_id'";
                                                         $stmt = $mysqli->prepare($ret);
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();

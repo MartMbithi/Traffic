@@ -38,7 +38,7 @@ require_once('../partials/head.php');
         <!-- .app-header -->
         <?php require_once('../partials/header.php'); ?>
         <!-- .app-aside -->
-        <?php require_once('../partials/aside.php'); ?>
+        <?php require_once('../partials/my_aside.php'); ?>
         <!-- .app-main -->
         <main class="app-main">
             <!-- .wrapper -->
@@ -50,12 +50,14 @@ require_once('../partials/head.php');
                         <!-- .page-title-bar -->
                         <header class="page-title-bar">
                             <!-- page title stuff goes here -->
-                            <h1 class="page-title"> Traffic Offences Charges Payments Reports </h1>
+                            <h1 class="page-title">My Traffic Offences </h1>
                         </header><!-- /.page-title-bar -->
                         <!-- .page-section -->
                         <div class="page-section">
                             <!-- .section-block -->
                             <!-- grid column -->
+
+                            <!-- End Modal -->
                             <div class="section-block">
                                 <div class="row">
                                     <div class="col-12 col-lg-12 col-xl-12">
@@ -63,41 +65,47 @@ require_once('../partials/head.php');
                                         <div class="card card-fluid">
                                             <!-- .card-body -->
                                             <div class="card-body">
-                                                <table id="export-data-table">
+                                                <table class="table">
                                                     <thead>
                                                         <tr>
-                                                            <th>Motorist Details </th>
-                                                            <th>Offense Details</th>
-                                                            <th>Payment Details</th>
+                                                            <th>Date Recorded </th>
+                                                            <th>Location</th>
+                                                            <th>Motorist</th>
+                                                            <th>Vehicle</th>
+                                                            <th>Officer Recorded</th>
+                                                            <th>Report</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $ret = "SELECT * FROM offenses_payments p INNER JOIN  offences o ON p.payment_offence_id  = o.offence_id
-                                                        INNER JOIN motorist m ON o.offence_motorist_id = m.motorist_id
-                                                        INNER JOIN traffic_rules tr ON tr.rule_id = o.offence_rule_id
-                                                        INNER JOIN vehicle_types vt ON o.offence_vehicle_type = vt.vehicle_type_id";
+                                                        $login_id = $_SESSION['login_id'];
+                                                        $ret = "SELECT * FROM offences o
+                                                     INNER JOIN motorist m ON o.offence_motorist_id = m.motorist_id
+                                                     INNER JOIN officer f ON  o.offence_officer_id  = f.officer_id
+                                                     INNER JOIN vehicle_types vt ON o.offence_vehicle_type = vt.vehicle_type_id
+                                                     WHERE m.motorist_login_id = '$login_id'";
                                                         $stmt = $mysqli->prepare($ret);
                                                         $stmt->execute(); //ok
                                                         $res = $stmt->get_result();
                                                         while ($offence = $res->fetch_object()) {
                                                         ?>
                                                             <tr>
+                                                                <th><?php echo $offence->offence_date; ?></th>
+                                                                <th><?php echo $offence->offence_location; ?></th>
                                                                 <th>
                                                                     Name: <?php echo $offence->motorist_full_name; ?><br>
                                                                     Email: <?php echo $offence->motorist_email; ?><br>
                                                                     Phone: <?php echo $offence->motorist_mobile; ?> <br>
                                                                 </th>
                                                                 <th>
-                                                                    Date : <?php echo $offence->offence_date; ?><br>
-                                                                    Location: <?php echo $offence->offence_location; ?><br>
-                                                                    Rule : <?php echo $offence->rule_name; ?> <br>
+                                                                    <?php echo $offence->vehicle_type_name; ?><br>
+                                                                    License: <?php echo $offence->offence_vehicle_registration; ?>
                                                                 </th>
                                                                 <th>
-                                                                    Ref : <?php echo $offence->payment_ref; ?><br>
-                                                                    Tr No: <?php echo $offence->payment_transaction_no; ?><br>
-                                                                    Amount : Ksh <?php echo $offence->payment_amount; ?> <br>
+                                                                    Name: <?php echo $offence->officer_full_name; ?><br>
+                                                                    Staff No: <?php echo $offence->officer_staff_no; ?>
                                                                 </th>
+                                                                <th><?php echo $offence->offence_report; ?></th>
                                                             </tr>
                                                         <?php
                                                         }
