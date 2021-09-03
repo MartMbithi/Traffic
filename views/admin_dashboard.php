@@ -64,7 +64,8 @@ require_once('../partials/head.php');
                                                 <a href="admin_officers" class="metric metric-bordered align-items-center">
                                                     <h2 class="metric-label"> Officers </h2>
                                                     <p class="metric-value h3">
-                                                        <sub><i class="fas fa-user-astronaut"></i></sub> <span class="value">8</span>
+                                                        <sub><i class="fas fa-user-astronaut"></i></sub>
+                                                        <span class="value"><?php echo $officer; ?></span>
                                                     </p>
                                                 </a> <!-- /.metric -->
                                             </div><!-- /metric column -->
@@ -74,7 +75,8 @@ require_once('../partials/head.php');
                                                 <a href="admin_motorists" class="metric metric-bordered align-items-center">
                                                     <h2 class="metric-label"> Registered Motorists </h2>
                                                     <p class="metric-value h3">
-                                                        <sub><i class="fas fa-biking"></i></sub> <span class="value">12</span>
+                                                        <sub><i class="fas fa-biking"></i></sub>
+                                                        <span class="value"><?php echo $motorist; ?></span>
                                                     </p>
                                                 </a> <!-- /.metric -->
                                             </div><!-- /metric column -->
@@ -84,7 +86,8 @@ require_once('../partials/head.php');
                                                 <a href="admin_offences" class="metric metric-bordered align-items-center">
                                                     <h2 class="metric-label"> Recorded Offences </h2>
                                                     <p class="metric-value h3">
-                                                        <sub><i class="fas fa-car-crash"></i></sub> <span class="value">64</span>
+                                                        <sub><i class="fas fa-car-crash"></i></sub>
+                                                        <span class="value"><?php echo $offences; ?></span>
                                                     </p>
                                                 </a> <!-- /.metric -->
                                             </div><!-- /metric column -->
@@ -97,7 +100,7 @@ require_once('../partials/head.php');
                                                 <span class="badge badge-lg badge-success"><span class="fas fa-hand-holding-usd pulse mr-1"></span> Offences Fines Payments</span>
                                             </div>
                                             <p class="metric-value h3">
-                                                <sub><i class="fas fa-money-bill-alt"></i></sub> <span class="value">Ksh 8</span>
+                                                <sub><i class="fas fa-money-bill-alt"></i></sub> <span class="value">Ksh <?php echo $offenses_payments; ?></span>
                                             </p>
                                         </a> <!-- /.metric -->
                                     </div><!-- /metric column -->
