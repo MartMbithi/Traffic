@@ -37,43 +37,23 @@ require_once('../partials/head.php');
             </h1>
         </header><!-- form -->
         <form method="post" class="auth-form">
-            <h1 class="text-primary text-center"><b>Sign In</b></h1>
+            <h1 class="text-primary text-center"><b>Confirm Password</b></h1>
             <!-- .form-group -->
             <div class="form-group">
                 <div class="form-label-group">
-                    <input type="text" id="inputUser" class="form-control" name="login_user_name" placeholder="Username" autofocus=""> <label for="inputUser">Username</label>
-                </div>
-            </div><!-- /.form-group -->
-            <!-- .form-group -->
-            <div class="form-group">
-                <div class="form-label-group">
-                    <input type="password" id="inputPassword" name="login_password" class="form-control" placeholder="Password"> <label for="inputPassword">Password</label>
+                    <input type="password" id="inputPassword" required name="new_password" class="form-control" placeholder="Password"> <label for="inputPassword">New Password</label>
                 </div>
             </div><!-- /.form-group -->
             <div class="form-group">
                 <div class="form-label-group">
-                    <label class="control-label">Login In As</label>
-                    <select id="bss1" class="form-control" data-toggle="selectpicker" data-width="100%">
-                        <option>Administrator</option>
-                        <option>Officer</option>
-                        <option>Motorist</option>
-                    </select>
-                </div><!-- /.form-group -->
-            </div>
+                    <input type="password" id="inputPassword" required name="confirm_password" class="form-control" placeholder="Password"> <label for="inputPassword">Confirm Password</label>
+                </div>
+            </div><!-- /.form-group -->
             </div><!-- /.form-group -->
             <!-- .form-group -->
             <div class="form-group">
-                <button class="btn btn-lg btn-primary btn-block" name="login" type="submit">Sign In</button>
+                <button class="btn btn-lg btn-primary btn-block" name="Confirm_Password" type="submit">Confirm Password</button>
             </div><!-- /.form-group -->
-            <!-- .form-group -->
-
-            <!-- recovery links -->
-            <div class="text-center pt-3">
-                <a href="reset_password" class="link">Forgot Password?</a>
-                <p>
-                    Don't have a motorist account? <a href="signup">Create One</a>
-                </p>
-            </div><!-- /recovery links -->
         </form><!-- /.auth-form -->
         <!-- copyright -->
         <?php require_once('../partials/footer.php'); ?>
