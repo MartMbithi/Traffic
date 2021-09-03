@@ -142,21 +142,21 @@ require_once('../partials/head.php');
                                                             <th><?php echo $offence->offence_date; ?></th>
                                                             <th><?php echo $offence->offence_location; ?></th>
                                                             <th>
-                                                                Name: <?php echo $offence->motorist_full_name; ?><br>
+                                                                Name:  <?php echo $offence->motorist_full_name; ?><br>
                                                                 Email: <?php echo $offence->motorist_email; ?><br>
-                                                                Phone:<?php echo $offence->motorist_mobile; ?> <br>
-                                                                License: <?php echo $offence->motorist_license_no; ?>
+                                                                Phone: <?php echo $offence->motorist_mobile; ?> <br>
                                                             </th>
                                                             <th>
-                                                                <?php echo $offence->vehicle_type_name; ?>
+                                                                <?php echo $offence->vehicle_type_name; ?><br>
+                                                                License: <?php echo $offence->offence_vehicle_registration; ?>
                                                             </th>
                                                             <th>
                                                                 Name: <?php echo $offence->officer_full_name; ?><br>
-                                                                Email: <?php echo $offence->officer_email; ?><br>
-                                                                Mobile:<?php echo $offence->officer_mobile; ?> <br>
+                                                                Staff No: <?php echo $offence->officer_staff_no; ?>
                                                             </th>
                                                             <td>
                                                                 <a class="badge badge-success" data-toggle="modal" href="#u-<?php echo $offence->offence_id; ?>">View Report</a>
+                                                               
                                                                 <!-- Update Modal -->
                                                                 <div class="modal fade" id="u-<?php echo $offence->offence_id; ?>">
                                                                     <div class="modal-dialog  modal-xl">
