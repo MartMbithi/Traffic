@@ -48,32 +48,16 @@ require_once('../partials/head.php');
                     <input type="text" id="inputUser" class="form-control" name="login_user_name" placeholder="Username" autofocus=""> <label for="inputUser">Username</label>
                 </div>
             </div><!-- /.form-group -->
+
             <!-- .form-group -->
             <div class="form-group">
-                <div class="form-label-group">
-                    <input type="password" id="inputPassword" name="login_password" class="form-control" placeholder="Password"> <label for="inputPassword">Password</label>
-                </div>
-            </div><!-- /.form-group -->
-            <div class="form-group">
-                <div class="form-label-group">
-                    <label class="control-label">Login In As</label>
-                    <select id="bss1" class="form-control" data-toggle="selectpicker" data-width="100%">
-                        <option>Administrator</option>
-                        <option>Officer</option>
-                        <option>Motorist</option>
-                    </select>
-                </div><!-- /.form-group -->
-            </div>
+                <button class="btn btn-lg btn-primary btn-block" name="reset_password" type="submit">Reset Password</button>
             </div><!-- /.form-group -->
             <!-- .form-group -->
-            <div class="form-group">
-                <button class="btn btn-lg btn-primary btn-block" name="login" type="submit">Sign In</button>
-            </div><!-- /.form-group -->
-            <!-- .form-group -->
-            
+
             <!-- recovery links -->
             <div class="text-center pt-3">
-                <a href="reset_password" class="link">Forgot Password?</a>
+                <a href="../" class="link">Remembered Password?</a>
             </div><!-- /recovery links -->
         </form><!-- /.auth-form -->
         <!-- copyright -->
